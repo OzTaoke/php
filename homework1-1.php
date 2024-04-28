@@ -70,7 +70,7 @@ for($i = 0; $i < sizeof($cars); $i++){
 echo '<table>';
 for($i = 1; $i < 10; $i++){
     echo '<tr>';
-        for($j = 1; $j < 10; $j++){
+        for($j = 1; $j < 11; $j++){
             if(($i * $j) % 2 == 0){
                 print_r('<th>' . '(' . $i * $j . ')' . '</th>');
             } elseif(($i * $j) % 2 == 1){
