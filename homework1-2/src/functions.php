@@ -1,33 +1,42 @@
 <?php
 
-function task1($array, $true)
+function task1($array, $join)
 {
     for ($i = 0; $i < sizeof($array); $i++) {
         echo '<p>';
-            print_r($array[$i]);
+            echo $array[$i];
         echo '</p>';
     }
-    if($true) {
+    if($join) {
         return implode($array);
     }
 }
 
-function task2(string $operation)
+function task2(string $operation, ... $numbers)
 {
-    $args = func_get_args();
     $result = 0;
-
-    for ($i = 1; $i < sizeof($args); $i++) {
-        if($operation == "+") {
-            $result += $args[$i];
-        } elseif($operation == "-") {
-            $result -= $args[$i];
-        } elseif($operation == "*") {
-            $result *= $args[$i];
-        } elseif($operation == "/") {
-            $result /= $args[$i];
-        }
+    $c = sizeof($numbers) - 1;
+    switch ($operation) {
+        case '+':
+            $result = array_sum($numbers);
+            break;
+        case '*':
+            $result = array_product($numbers);
+            break;
+        case '-':
+            $result = array_shift($numbers);
+            for ($i = 0; $i < $c; $i++) {
+                $result -= $numbers[$i];
+            }
+            break;
+        case '/':
+            $result = array_shift($numbers);
+            for ($i = 0; $i < $c ; $i++) {
+                $result /= $numbers[$i];
+            }
+            break;
     }
+
     return $result;
 }
 
@@ -39,44 +48,38 @@ function task3($num1,$num2)
     } elseif ($num1 <= 0 || $num2 <= 0){
         trigger_error('Аргументы должны быть положительными числами и не равны 0');
         return false;
-    } else {
-        echo '<table>';
-            for($i = 1; $i <= $num1; $i++) {
-                echo '<tr>';
-                    for($j = 1; $j <= $num2; $j++) {
-                        print_r('<th>' . $i * $j . '</th>');
-                    }
-                echo '</tr>';
-            }
-        echo '</table>' . '<br>';
     }
+
+    echo '<table>';
+    for($i = 1; $i <= $num1; $i++) {
+        echo '<tr>';
+        for($j = 1; $j <= $num2; $j++) {
+            echo '<th>' . $i * $j . '</th>';
+        }
+        echo '</tr>';
+    }
+    echo '</table>' . '<br>';
 }
 
 function task4()
 {
     date_default_timezone_set('Europe/Moscow');
-    print_r(date('d.m.Y H:i') . '<br>' . strtotime('24.02.2016 00:00:00') . '<br>');
+    echo date('d.m.Y H:i') . '<br>' . strtotime('24.02.2016 00:00:00') . '<br>';
 }
 
 function task5()
 {
     $str1 = 'Карл у Клары украл Кораллы';
-    print_r(str_replace('К', ' ', $str1) . '<br>');
+    echo str_replace('К', ' ', $str1) . '<br>';
 
     $str2 =  'Две бутылки лимонада';
-    print_r(str_replace('Две', 'Три', $str2) . '<br>');
+    echo str_replace('Две', 'Три', $str2) . '<br>';
 }
 
-function task6(string $fileName)
+function task6($fileName,string $text){
+    file_put_contents($fileName, $text);
+}
+function task7(string $fileName)
 {
-    $file = fopen($fileName, 'r');
-    if (!$file) {
-        return false;
-    }
-
-    $str = '';
-    while (!feof($file)) {
-        $str .= fgets($file);
-    }
-    print_r($str);
+    echo file_get_contents($fileName);
 }
