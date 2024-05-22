@@ -1,0 +1,120 @@
+<head>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body, p, h1, ul, li {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        li {
+            list-style: none;
+        }
+        .button {
+            width: 100px;
+            height: 50px;
+            border-radius: 5px;
+            color:peru;
+            border: 1px solid peru;
+            font-size: 18px;
+        }
+        .container {
+            max-width: 1200px;
+            min-height: 100vh;
+            margin: 0 auto;
+            border: 1px solid peru;
+            padding: 20px;
+        }
+        .user {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            margin-bottom: 50px;
+        }
+        .user__title {
+            font-size: 40px;
+            color:peru;
+        }
+        .form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            color:peru;
+        }
+        .form__text {
+            width: 600px;
+            height: 100px;
+            margin-bottom: 20px;
+            resize: none
+        }
+        .posts {
+            margin-bottom: 20px;
+        }
+        .posts__item {
+            width: 600px;
+            border-bottom: 1px solid peru;
+            padding: 20px;
+            text-align: right;
+        }
+        .post__item-user {
+            color:darkgray;
+        }
+        .post__item-message {
+            padding-top: 20px;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .post__item-image {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        .post__item-image:hover {
+            transform: scale(6.0);
+        }
+    </style>
+    <title>Блог</title>
+</head>
+<body>
+<div class="container">
+    <div class="user">
+        <h1 class="user__title">Вы вошли как <?=$this->user->getName();?></h1>
+        <form class="user__exit" action="/user/logout">
+            <input class="user__exit-button button" type="submit" value="Выйти">
+        </form>
+    </div>
+    <ul class="posts">
+        <?php
+        if($posts = $this->posts): ?>
+            <?php foreach ($this->posts as $post): ?>
+                <li class="posts__item">
+                    <span class="post__item-user">Сообщение от пользователя <?=$this->user->getUserNameById($post->getUserId())?> отправлено <?=$post->getDate()?></span>
+                    <div class="post__item-message"><?=$post->getMessage()?></div>
+                    <?php if($post->getFileContent()):?>
+                        <img class="post__item-image" alt="слишком большая картинка" src="/images/<?=$post->getFileContent();?>">
+                    <?php endif; ?>
+                    <?php if ($this->user->isAdmin()):?>
+                        <div class="admin">
+                            <a class="admin__button" href="/admin/delete/?id=<?=$post->getId();?>">Удалить</a>
+                        </div>
+                    <?php endif; ?>
+                </li>
+            <?php endforeach; ?>
+        <?php else: echo 'Нет сообщений'?>
+        <?php endif; ?>
+    </ul>
+    <form class="form" enctype="multipart/form-data" action="/blog/send" method="post">
+        <label>
+            <textarea class="form__text" name="message"></textarea>
+        </label>
+        <input class="form__file" name="userfile" type="file"/><br>
+        <input class="form__button button" type="submit" value="Отправить">
+    </form>
+</div>
+</body>
+
+
