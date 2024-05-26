@@ -70,11 +70,7 @@
             margin-bottom: 10px;
         }
         .post__item-image {
-            width: 100px;
             margin-bottom: 20px;
-        }
-        .post__item-image:hover {
-            transform: scale(6.0);
         }
     </style>
     <title>Блог</title>
@@ -92,7 +88,7 @@
         if($posts = $this->posts): ?>
             <?php foreach ($this->posts as $post): ?>
                 <li class="posts__item">
-                    <span class="post__item-user">Сообщение от пользователя <?=$this->user->getUserNameById($post->getUserId())?> отправлено <?=$post->getDate()?></span>
+                    <span class="post__item-user">Сообщение от пользователя <b><?=$this->user->getUserNameById($post->getUserId())?></b> отправлено <?=$post->getDate()?></span>
                     <div class="post__item-message"><?=$post->getMessage()?></div>
                     <?php if($post->getFileContent()):?>
                         <img class="post__item-image" alt="слишком большая картинка" src="/images/<?=$post->getFileContent();?>">

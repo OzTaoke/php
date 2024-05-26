@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Май 22 2024 г., 23:46
+-- Время создания: Май 27 2024 г., 02:15
 -- Версия сервера: 5.7.39
--- Версия PHP: 7.2.34
+-- Версия PHP: 8.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,12 +40,12 @@ CREATE TABLE `posts` (
 --
 
 INSERT INTO `posts` (`id`, `user_id`, `message`, `date`, `file_content`) VALUES
-(83, 4, 'Be nice', '2024-05-22 23:31:12', NULL),
-(84, 1, 'Ok!', '2024-05-22 23:41:57', NULL),
-(85, 1, '', '2024-05-22 23:43:40', '98782.png'),
-(86, 1, 'No problem', '2024-05-22 23:44:24', NULL),
-(87, 2, 'I can not be nice', '2024-05-22 23:45:18', NULL),
-(88, 2, '=))))', '2024-05-22 23:45:48', NULL);
+(91, 4, 'Have a good day!', '2024-05-25 17:44:42', NULL),
+(92, 17, 'Hello!', '2024-05-25 23:49:46', NULL),
+(93, 17, 'How are you?', '2024-05-26 00:33:37', NULL),
+(127, 4, '', '2024-05-27 00:32:22', '38830.png'),
+(128, 4, '', '2024-05-27 00:32:37', '86936.png'),
+(129, 39, 'Hello', '2024-05-27 02:10:59', '');
 
 -- --------------------------------------------------------
 
@@ -66,10 +66,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `create_at`) VALUES
-(1, 'Александра', 'drakshen123@mail.ru', 'a1f681143d086bb20997fb4c740490ed3ff7759f', '2024-05-21 12:21:36'),
-(2, 'Иван', 'onufriev@yahoo.com', 'c3c989e3e96f75496de4dca6b1ab22182c1e0ec8', '2024-05-22 12:44:08'),
-(3, 'Евгения', 'drakshen@mail.ru', 'a1f681143d086bb20997fb4c740490ed3ff7759f', '2024-05-22 17:28:41'),
-(4, 'Admin', 'admin@mail.ru', '6e09265a05078e6663f4a18dbbd64f6c311a13db', '2024-05-22 20:14:42');
+(4, 'Admin', 'admin@mail.ru', '6e09265a05078e6663f4a18dbbd64f6c311a13db', '2024-05-22 20:14:42'),
+(18, 'Boris', 'onufriev@yahoo.com', 'd5416154a4ce829774194d2f648ac54181edda8a', '2024-05-26 01:01:52'),
+(24, 'Sasha', 'drakshen1234@mail.ru', 'c3c989e3e96f75496de4dca6b1ab22182c1e0ec8', '2024-05-27 01:03:22'),
+(39, 'Александра', 'drakshen123@mail.ru', 'c3c989e3e96f75496de4dca6b1ab22182c1e0ec8', '2024-05-27 02:02:27');
 
 --
 -- Индексы сохранённых таблиц
@@ -98,13 +98,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

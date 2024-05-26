@@ -13,17 +13,15 @@ class Db
 
     private function __construct()
     {
-
     }
 
     private function __clone()
     {
-
     }
 
     public static function getInstance(): self
     {
-        if(!self::$instance){
+        if (!self::$instance) {
             self::$instance = new self();
         }
 
@@ -37,7 +35,7 @@ class Db
         $dbUser = DB_USER;
         $dbPassword = DB_PASSWORD;
 
-        if(!$this->pdo) {
+        if (!$this->pdo) {
             $this->pdo = new PDO(
                 "mysql:host=$host;dbname=$dbName",
                 $dbUser,
@@ -57,7 +55,7 @@ class Db
 
         $ret = $prepared->execute($params);
 
-        if(!$ret) {
+        if (!$ret) {
             $errorInfo = $prepared->errorInfo();
             trigger_error("$errorInfo[0]#$errorInfo[1]: $errorInfo[2]", E_USER_WARNING);
             return [];
@@ -77,7 +75,7 @@ class Db
 
         $ret = $prepared->execute($params);
 
-        if(!$ret) {
+        if (!$ret) {
             $errorInfo = $prepared->errorInfo();
             trigger_error("$errorInfo[0]#$errorInfo[1]: $errorInfo[2]", E_USER_WARNING);
             return [];
@@ -87,7 +85,7 @@ class Db
         $affectedRows = $prepared->rowCount();
 
         $this->log[] = [$query, microtime(true) - $t, $_method, $affectedRows];
-        if(!$data) {
+        if (!$data) {
             return false;
         }
 
@@ -102,7 +100,7 @@ class Db
 
         $ret = $prepared->execute($params);
 
-        if(!$ret) {
+        if (!$ret) {
             $errorInfo = $prepared->errorInfo();
             trigger_error("$errorInfo[0]#$errorInfo[1]: $errorInfo[2]", E_USER_WARNING);
             return -1;
@@ -121,11 +119,11 @@ class Db
 
     public function getLogHTML(): string
     {
-        if(!$this->log){
+        if (!$this->log) {
             return '';
         }
         $res = '';
-        foreach($this->log as $elem){
+        foreach ($this->log as $elem) {
             $res = $elem[1] . ':' . $elem[0] . '(' . $elem[2] . ') [' . $elem[3] . ']' . '\n';
         }
         return '<pre>' . $res . '</pre>';

@@ -1,0 +1,84 @@
+<head>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body, p, h2, ul, li {
+            margin: 0;
+            padding: 0;
+            color:peru;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        li {
+            list-style: none;
+        }
+        input {
+            width: 600px;
+            height: 50px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 48px;
+        }
+        .button {
+            height: 50px;
+            border-radius: 5px;
+            color:peru;
+            border: 1px solid peru;
+            font-size: 18px;
+        }
+        .container {
+            max-width: 1200px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin: 0 auto;
+            border: 1px solid peru;
+            padding: 20px;
+        }
+    </style>
+    <title>Блог: регистрация</title>
+</head>
+<body>
+<div class="container">
+    <?php if($this->error): ?>
+        <span style="color: red"><?=$this->error;?></span>
+    <?php endif; ?>
+    <h2>Регистрация</h2><br>
+    <form action="/user/register" method="post">
+        <label>Имя:<br>
+            <input type="text" name="name"><br>
+        </label>
+        <label>Email:<br>
+            <input type="text" name="email"><br>
+        </label>
+        <label>Пароль:<br>
+            <input type="password" name="password"><br>
+        </label>
+        <label>Повторите пароль:<br>
+            <input type="password" name="passwordRepeat"><br>
+        </label>
+        <input class="button" type="submit" value="Зарегистрироваться">
+    </form>
+    <br>
+    <br>
+
+    <h2>Вход</h2><br>
+    <form action="/user/login" method="post">
+        <label>Email:<br>
+            <input type="text" name="email"><br>
+        </label>
+        <label>Пароль:<br>
+            <input type="password" name="password"><br>
+        </label>
+        <input class="button" type="submit" value="Войти">
+    </form>
+    <br>
+    <br>
+</div>
+</body>
+

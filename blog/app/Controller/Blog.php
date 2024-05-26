@@ -11,29 +11,29 @@ class Blog extends AbstractController
     /**
      * @throws RedirectException
      */
-    function indexAction(): string
+    public function indexAction(): string
     {
-        if(!$this->user) {
-            $this->redirect('/user/register');
+        if (!$this->user) {
+            $this->redirect('/');
         }
         $posts = MessageModel::getView();
 
-        return $this->view->render('Blog/index.phtml',
-        [
+        return $this->view->render('Blog/index', 2, [
             'user' => $this->user,
-            'posts' => $posts
+            'posts' => $posts,
+            'admin' => $this->user->isAdmin()
         ]);
     }
 
     /**
      * @throws RedirectException
      */
-    function sendAction()
+    public function sendAction(): void
     {
-        if(!$this->user) {
-            $this->redirect('/user/register');
+        if (!$this->user) {
+            $this->redirect('/');
         }
-        if($_POST['message'] || $_FILES['userfile']['tmp_name']) {
+        if ($_POST['message'] || $_FILES['userfile']['tmp_name']) {
             $message = htmlspecialchars($_POST['message']);
             $user_id = $_SESSION['id'];
             $date = date("Y-m-d H:i:s");
@@ -43,7 +43,7 @@ class Blog extends AbstractController
                 ->setMessage($message)
                 ->setDate($date);
 
-            if(!empty($_FILES['userfile']['tmp_name'])) {
+            if (!empty($_FILES['userfile']['tmp_name'])) {
                 $post->loadFile($_FILES['userfile']['tmp_name']);
             }
 
@@ -52,5 +52,4 @@ class Blog extends AbstractController
 
         $this->redirect('/blog/index');
     }
-
 }

@@ -7,14 +7,14 @@ use Base\AbstractController;
 
 class Api extends AbstractController
 {
-    public function getUserMessages()
+    public function getUserMessages(): bool|string
     {
         $userId = (int) $_GET['user_id'] ?? 0;
-        if(!$userId) {
+        if (!$userId) {
             return $this->response(['error' => 'Пользователь не найден']);
         }
         $messages = Message::getMessagesByUserId($userId);
-        if(!$messages) {
+        if (!$messages) {
             return $this->response(['error' => 'нет сообщений']);
         }
 
@@ -25,7 +25,7 @@ class Api extends AbstractController
         return $this->response(['messages' => $data]);
     }
 
-    public function response(array $data)
+    public function response(array $data): bool|string
     {
         header('Content-type: application/json');
         return json_encode($data);

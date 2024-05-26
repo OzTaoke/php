@@ -4,6 +4,7 @@ namespace App\Model;
 
 use Base\AbstractModel;
 use Base\Db;
+use Intervention\Image\ImageManager as Image;
 
 class Message extends AbstractModel
 {
@@ -12,11 +13,12 @@ class Message extends AbstractModel
     private $message;
 
     private $date;
-    private $fileContent;
+    private string $fileContent = '';
+    private string $imagesPath =  'images';
 
     public function __construct($data = [])
     {
-        if($data) {
+        if ($data) {
             $this->id = $data['id'];
             $this->userId = $data['user_id'];
             $this->message = $data['message'];
@@ -36,7 +38,7 @@ class Message extends AbstractModel
     /**
      * @param mixed $id
      */
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
         return $this;
@@ -53,7 +55,7 @@ class Message extends AbstractModel
     /**
      * @param mixed $userId
      */
-    public function setUserId($userId): self
+    public function setUserId(int $userId): self
     {
         $this->userId = $userId;
         return $this;
@@ -70,7 +72,7 @@ class Message extends AbstractModel
     /**
      * @param mixed $message
      */
-    public function setMessage($message): self
+    public function setMessage(string $message): self
     {
         $this->message = $message;
         return $this;
@@ -87,7 +89,7 @@ class Message extends AbstractModel
     /**
      * @param mixed $date
      */
-    public function setDate($date): self
+    public function setDate(string $date): self
     {
         $this->date = $date;
         return $this;
@@ -96,17 +98,23 @@ class Message extends AbstractModel
     /**
      * @return mixed
      */
-    public function getFileContent()
+    public function getFileContent(): mixed
     {
         return $this->fileContent;
     }
 
-    public function loadFile($file)
+    public function loadFile($file): void
     {
-        if(isset($file)) {
-            $this->fileContent = mt_rand(1,100000) . '.png';
-            move_uploaded_file
-            ($file, getcwd() . '/images/' . $this->fileContent);
+        if (isset($file)) {
+            $this->fileContent = (string)mt_rand(1, 100000) . '.png';
+            $result = getcwd() . DIRECTORY_SEPARATOR . $this->imagesPath . DIRECTORY_SEPARATOR . $this->fileContent;
+            $image = (new Image)
+                ->make($file)
+                ->resize(200, null, function ($image) {
+                    $image->aspectRatio();
+                })
+                ->insert(getcwd() . DIRECTORY_SEPARATOR . $this->imagesPath . DIRECTORY_SEPARATOR . 'watermark.png', 'bottom-right')
+                ->save($result,100);
         }
     }
 
@@ -126,8 +134,7 @@ class Message extends AbstractModel
         $insert = "INSERT INTO blog.posts (user_id, `message`, date, file_content) 
         VALUES (:userId, :message, :date, :fileContent)";
 
-        return $db->exec($insert, __FILE__,
-        [
+        return $db->exec($insert, __FILE__, [
             ':userId' => $this->userId,
             ':message' => $this->message,
             ':date' => $this->date,
@@ -147,14 +154,23 @@ class Message extends AbstractModel
         $db = Db::getInstance();
         $select = "SELECT * FROM blog.posts ORDER BY date DESC LIMIT 20";
         $data = $db->fetchAll($select, __METHOD__);
-
-        if(!$data) {
+        $users = User::getUsers();
+        if (!$data) {
             return [];
         }
-
         $posts = [];
         foreach ($data as $row) {
             $message = new self($row);
+            foreach ($users as $user) {
+                if(in_array($user['id'], $row)) {
+                    if ($user['id'] == $message->userId) {
+                        $message->name = $user['name'];
+                        break;
+                    }
+                } else {
+                    $message->name = 'Удаленный пользователь';
+                }
+            }
             $message->id = $row['id'];
             $posts[] = $message;
         }
@@ -168,7 +184,7 @@ class Message extends AbstractModel
         $select = "SELECT * FROM blog.posts WHERE user_id = :id LIMIT 20";
         $data = $db->fetchAll($select, __METHOD__, [':id' => $id]);
 
-        if(!$data) {
+        if (!$data) {
             return [];
         }
 
@@ -182,4 +198,8 @@ class Message extends AbstractModel
         return $posts;
     }
 
+    public function setWatermark(Image $image)
+    {
+
+    }
 }

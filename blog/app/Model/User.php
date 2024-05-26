@@ -15,12 +15,12 @@ class User extends AbstractModel
 
     public function __construct($data = [])
     {
-        if($data) {
+        if ($data) {
             $this->id = $data['id'];
             $this->name = $data['name'];
             $this->email = $data['email'];
             $this->password = $data['password'];
-            $this->createAt = $data['created_at'];
+            $this->createAt = $data['created_at'] ?? '';
         }
     }
 
@@ -127,39 +127,44 @@ class User extends AbstractModel
         return $id;
     }
 
-    public static function getById(int $id)
+    public static function getById(int $id): self|null
     {
         $db = Db::getInstance();
         $select = "SELECT * FROM blog.users WHERE id = $id";
         $data = $db->fetchOne($select, __METHOD__);
 
-        if(!$data) {
+        if (!$data) {
             return null;
         }
 
         return new self($data);
     }
-
+    public static function getUsers(): array
+    {
+        $db = Db::getInstance();
+        $select = "SELECT * FROM blog.users;";
+        return $db->fetchAll($select, __METHOD__);
+    }
     public static function getUserNameById(int $id): string
     {
         $db = Db::getInstance();
         $select = "SELECT * FROM blog.users WHERE id = $id";
         $data = $db->fetchOne($select, __METHOD__);
 
-        if(!$data) {
+        if (!$data) {
             return '';
         }
 
         return $data['name'];
     }
 
-    public static function getByEmail(string $email)
+    public static function getByEmail(string $email): self|null
     {
         $db = Db::getInstance();
         $select = "SELECT * FROM blog.users WHERE `email` = :email";
         $data = $db->fetchOne($select, __METHOD__, [':email' => $email]);
 
-        if(!$data) {
+        if (!$data) {
             return null;
         }
 
@@ -176,27 +181,3 @@ class User extends AbstractModel
         return in_array($this->id, ADMIN_ITS);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

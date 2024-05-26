@@ -11,11 +11,11 @@ class Route
 
     private function process()
     {
-        if(!$this->processed) {
+        if (!$this->processed) {
             $parts = parse_url($_SERVER['REQUEST_URI']);
             $path = $parts['path'];
 
-            if(($route = $this->routes[$path] ?? null) !== null){
+            if (($route = $this->routes[$path] ?? null) !== null){
                 $this->controllerName = $route[0];
                 $this->actionName = $route[1];
             } else {
@@ -27,7 +27,7 @@ class Route
         }
     }
 
-    public function addRoute($path,$controllerName,$actionName)
+    public function addRoute($path, $controllerName, $actionName): void
     {
         $this->routes[$path] = [
             $controllerName,
@@ -39,7 +39,7 @@ class Route
      */
     public function getControllerName(): string
     {
-        if(!$this->processed) {
+        if (!$this->processed) {
             $this->process();
         }
         return $this->controllerName;
@@ -49,7 +49,7 @@ class Route
      */
     public function getActionName(): string
     {
-        if(!$this->processed) {
+        if (!$this->processed) {
             $this->process();
         }
         return $this->actionName . 'Action';

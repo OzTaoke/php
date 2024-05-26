@@ -1,0 +1,37 @@
+{% extends 'Blog/base.html.twig' %}
+{% block title %}Блог{% endblock %}
+{% block content %}
+<div class="user">
+    <h1 class="user__title">Вы вошли как {{ user.name }}</h1>
+    <form class="user__exit" action="/user/logout">
+        <input class="user__exit-button button" type="submit" value="Выйти">
+    </form>
+</div>
+<ul class="posts">
+    {% if posts %}
+    {% for post in posts %}
+    <li class="posts__item">
+        <span class="post__item-user">Сообщение от пользователя <b>{{ post.name }}</b> отправлено {{ post.date }}</span>
+        <div class="post__item-message">{{ post.message }}</div>
+        {% if post.fileContent %}
+        <img class="post__item-image" alt="слишком большая картинка" src="/images/{{ post.fileContent }}">
+        {% endif %}
+        {% if admin %}
+        <div class="admin">
+            <a class="admin__button" href="/admin/delete/?id={{ post.id }}">Удалить</a>
+        </div>
+        {% endif %}
+    </li>
+    {% endfor %}
+    {% else %}
+        <span>Нет сообщений</span>
+    {% endif %}
+</ul>
+<form class="form" enctype="multipart/form-data" action="/blog/send" method="post">
+    <label>
+        <textarea class="form__text" name="message"></textarea>
+    </label>
+    <input class="form__file" name="userfile" type="file"/><br>
+    <input class="form__button button" type="submit" value="Отправить">
+</form>
+{% endblock %}

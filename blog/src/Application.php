@@ -12,6 +12,8 @@ class Application
     private $controller;
     private $actionName;
 
+    private $pattern;
+
     public function __construct()
     {
         $this->route = new Route();
@@ -20,7 +22,7 @@ class Application
     /**
      * @throws RouteException
      */
-    public function run()
+    public function run(): void
     {
         try {
             session_start();
@@ -33,29 +35,32 @@ class Application
             $this->initUser();
 
             $content = $this->controller->{$this->actionName}();
+
             echo $content;
         } catch (RedirectException $e) {
             header('Location: ' . $e->getUrl());
             die;
-        } catch(RouteException $e) {
+        } catch (RouteException $e) {
             header('HTTP/1.0 404 Not Found');
             die;
         }
     }
 
-    private function initUser()
+    private function initUser(): void
     {
         $id = $_SESSION['id'] ?? null;
-        if($id) {
+        if ($id) {
             $user = \App\Model\User::getById($id);
-            if($user) {
+            if ($user) {
                 $this->controller->setUser($user);
             }
         }
     }
 
-    private function addRoutes()
+    private function addRoutes(): void
     {
+        /** @uses User::indexAction */
+        $this->route->addRoute('/', User::class, 'index');
         /** @uses User::loginAction */
         $this->route->addRoute('/user/login', User::class, 'login');
         /** @uses User::registerAction */
@@ -68,10 +73,10 @@ class Application
     /**
      * @throws RouteException
      */
-    private function initController()
+    private function initController(): void
     {
         $controllerName = $this->route->getControllerName();
-        if(!class_exists($controllerName)){
+        if (!class_exists($controllerName)) {
             throw new RouteException("Controller class '$controllerName' not found");
         }
         $this->controller = new $controllerName();
@@ -80,10 +85,10 @@ class Application
     /**
      * @throws RouteException
      */
-    private function initAction()
+    private function initAction(): void
     {
         $actionName = $this->route->getActionName();
-        if(!method_exists($this->controller, $actionName)) {
+        if (!method_exists($this->controller, $actionName)) {
             throw new RouteException('Action does not exist');
         }
         $this->actionName = $actionName;

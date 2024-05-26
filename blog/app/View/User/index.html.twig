@@ -1,0 +1,38 @@
+{% extends 'User/base.html.twig' %}
+{% block title %}Блог: регистрация и вход{% endblock %}
+{% block content %}
+    {% if error %}
+    <span style="color: red">{{ error }}</span>
+    {% endif %}
+    <h2>Регистрация</h2><br>
+    <form action="/user/register" method="post">
+        <label>Имя:<br>
+            <input type="text" name="name"><br>
+        </label>
+        <label>Email:<br>
+            <input type="text" name="email"><br>
+        </label>
+        <label>Пароль:<br>
+            <input type="password" name="password"><br>
+        </label>
+        <label>Повторите пароль:<br>
+            <input type="password" name="passwordRepeat"><br>
+        </label>
+        <input class="button" type="submit" value="Зарегистрироваться">
+    </form>
+    <br>
+    <br>
+
+    <h2>Вход</h2><br>
+    <form action="/user/login" method="post">
+        <label>Email:<br>
+            <input type="text" name="email"><br>
+        </label>
+        <label>Пароль:<br>
+            <input type="password" name="password"><br>
+        </label>
+        <input class="button" type="submit" value="Войти">
+    </form>
+    <br>
+    <br>
+{% endblock %}

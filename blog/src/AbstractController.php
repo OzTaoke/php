@@ -12,20 +12,20 @@ abstract class AbstractController
     protected $view;
     /** @var User */
     protected $user;
-    /** @var Message */
-    protected $posts;
     /**
      * @throws RedirectException
      */
 
-    protected function redirect(string $url) {
+    protected function redirect(string $url)
+    {
         throw new RedirectException($url);
     }
-    public function setView(View $view)
+
+    public function setView(View $view): void
     {
         $this->view = $view;
     }
-    public function setUser(User $user)
+    public function setUser(User $user): void
     {
         $this->user = $user;
     }

@@ -11,10 +11,10 @@ class Admin extends AbstractController
     /**
      * @throws RedirectException
      */
-    public function deleteAction()
+    public function deleteAction(): void
     {
 
-        if(!$this->user || !$this->user->isAdmin()) {
+        if (!$this->user || !$this->user->isAdmin()) {
             $this->redirect('/');
         }
         $id = (int) $_GET['id'];
